@@ -11,7 +11,7 @@
     https://pypi.org/project/beautifulsoup4/
     https://habr.com/ru/articles/544828/
 
-  3) Pandas:
+  2) Pandas:
    
     https://www.youtube.com/watch?v=-sJxwvx0P20&t=276s&ab_channel=AlexanderErshov
     https://skillbox.ru/media/code/rabotaem-s-pandas-osnovnye-ponyatiya-i-realnye-dannye/
