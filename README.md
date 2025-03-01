@@ -15,3 +15,4 @@
    
     https://www.youtube.com/watch?v=-sJxwvx0P20&t=276s&ab_channel=AlexanderErshov
     https://skillbox.ru/media/code/rabotaem-s-pandas-osnovnye-ponyatiya-i-realnye-dannye/
+    https://pandas.pydata.org/docs/
