@@ -1,0 +1,27 @@
+ID: id="pubnum"
+
+Title: id="title"
+
+Abstract: class="abstract style-scope patent-text"
+
+Images: class="thumbnails style-scope image-carousel" {<img>}
+
+Classifications: (id="classifications") class="code style-scope classification-tree", class="description style-scope classification-tree"
+
+Description: class="description style-scope patent-text" {<div>}
+
+Claims: class="claims style-scope patent-text" {class="claim-text style-scope patent-text"}
+
+Status: class="title-text style-scope application-timeline"
+
+Inventor: class="important-people style-scope patent-result" {data-inventor="Layla Katiraee"}
+
+========================================================================================================
+
+Patent Citations value: id="patentCitations"
+
+Cited value: id="citedBy"
+
+Priority Applications value: id="applicationPriorityApps"
+
+Applications Claiming Priority value: id="appsClaimingPriority"
