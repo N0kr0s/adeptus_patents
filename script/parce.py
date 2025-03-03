@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Путь к файлу
-file_path = '..data/gp-search-20250301-010925.xlsx'
+file_path = '../data/gp-search-20250301-010925.xlsx'
 
 # Чтение Excel файла, пропуская первую строку
 df = pd.read_excel(file_path, skiprows=1)
@@ -20,5 +20,5 @@ df = df[df['result link'].notna()]
 result_links = df['result link'].tolist()
 
 # Вывод ссылок
-for link in result_links:
-    print(link)
+for url in result_links:
+    print(url)
