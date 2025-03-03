@@ -18,4 +18,3 @@
     https://pandas.pydata.org/docs/
 
 Юзаем сайт https://patents.google.com/?language=SPANISH и вытаскиваем из него url-ки (result link), переходим по ним через request, парсим всю инфу с этих url-ок к нам в датасет и всё гг вп
-
