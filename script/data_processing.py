@@ -28,15 +28,15 @@ def process_excel_and_save(file_path_excel, file_path_csv):
     # Выбор первых 5000 записей
     df_limited = df.head(5000)
 
-    # Создание подмножества необходимых столбцов
+    # Создание подмножества необходимых столбцов и создание копии
     columns_to_save = [
         'id', 'title', 'assignee', 'inventor/author', 'priority date',
         'filing/creation date', 'publication date', 'grant date', 'result link'
     ]
-    df_final = df_limited[columns_to_save]
+    df_final = df_limited[columns_to_save].copy()  # Явно создаем копию
 
     # Переименование столбца 'result link' в 'url'
-    df_final.rename(columns={'result link': 'url'}, inplace=True)
+    df_final = df_final.rename(columns={'result link': 'url'})  # Без inplace=True
 
     # Сохранение в CSV-файл
     os.makedirs(os.path.dirname(file_path_csv), exist_ok=True)  # Создаем директорию, если она не существует
