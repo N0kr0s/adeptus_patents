@@ -25,3 +25,17 @@ Cited value: id="citedBy"
 Priority Applications value: id="applicationPriorityApps"
 
 Applications Claiming Priority value: id="appsClaimingPriority"
+
+========================================================================================================
+
+#Meta
+
+<meta name="description">
+
+<meta name=DC.title">
+
+name="DC.date"
+
+name="citation_patent_application_number"
+
+name="DC.contributor"
