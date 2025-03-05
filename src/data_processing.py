@@ -1,12 +1,13 @@
 import pandas as pd
 import os
+from config import MAX_ROWS_VALUE
 
 def process_excel_and_save(file_path_gp, file_path_csv):
     """
     Обрабатывает данные из датасета и сохраняет первые 5000 записей в файл основного датасета.
 
-    file_path_gp: Путь к google_patents-датасету.
-    file_path_csv: Путь к файлу основного датасета для сохранения результатов.
+    :param file_path_gp: Путь к google_patents-датасету.
+    :param file_path_csv: Путь к файлу основного датасета для сохранения результатов.
     """
     try:
         # Чтение Excel-файла, пропуская первую строку
@@ -26,7 +27,7 @@ def process_excel_and_save(file_path_gp, file_path_csv):
     df = df[df['result link'].notna()]
 
     # Выбор первых 5000 записей
-    df_limited = df.head(5000)
+    df_limited = df.head(MAX_ROWS_VALUE)
 
     # Создание подмножества необходимых столбцов и создание копии
     columns_to_save = [
