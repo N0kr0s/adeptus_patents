@@ -1,18 +1,18 @@
 import pandas as pd
 import os
 
-def process_excel_and_save(file_path_excel, file_path_csv):
+def process_excel_and_save(file_path_gp, file_path_csv):
     """
     Обрабатывает данные из датасета и сохраняет первые 5000 записей в файл основного датасета.
 
-    file_path_excel: Путь к Excel-датасету с данными.
+    file_path_gp: Путь к google_patents-датасету.
     file_path_csv: Путь к файлу основного датасета для сохранения результатов.
     """
     try:
         # Чтение Excel-файла, пропуская первую строку
-        df = pd.read_excel(file_path_excel, skiprows=1)
+        df = pd.read_csv(file_path_gp, skiprows=1)
     except Exception as e:
-        print(f"Ошибка при чтении Excel-файла {file_path_excel}: {e}")
+        print(f"Ошибка при чтении google_patents-файла {file_path_gp}: {e}")
         return
 
     # Переименование столбцов (если они не читаются корректно)
