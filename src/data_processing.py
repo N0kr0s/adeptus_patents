@@ -1,8 +1,8 @@
 import pandas as pd
 import os
-from config import MAX_ROWS_VALUE
+from config import *
 
-def process_excel_and_save(file_path_gp, file_path_csv):
+def process_excel_and_save():
     """
     Обрабатывает данные из датасета и сохраняет первые 5000 записей в файл основного датасета.
 
@@ -11,9 +11,9 @@ def process_excel_and_save(file_path_gp, file_path_csv):
     """
     try:
         # Чтение Excel-файла, пропуская первую строку
-        df = pd.read_csv(file_path_gp, skiprows=1)
+        df = pd.read_csv(SOURCE_CSV_PATH, skiprows=1)
     except Exception as e:
-        print(f"Ошибка при чтении google_patents-файла {file_path_gp}: {e}")
+        print(f"Ошибка при чтении google_patents-файла {SOURCE_CSV_PATH}: {e}")
         return
 
     # Переименование столбцов (если они не читаются корректно)
@@ -40,7 +40,7 @@ def process_excel_and_save(file_path_gp, file_path_csv):
     df_final = df_final.rename(columns={'result link': 'url'})  # Без inplace=True
 
     # Сохранение в CSV-файл
-    os.makedirs(os.path.dirname(file_path_csv), exist_ok=True)  # Создаем директорию, если она не существует
-    df_final.to_csv(file_path_csv, index=False)
+    os.makedirs(os.path.dirname(DATASET_PATH), exist_ok=True)  # Создаем директорию, если она не существует
+    df_final.to_csv(DATASET_PATH, index=False)
 
-    print(f"Первые 5000 записей успешно сохранены в {file_path_csv}")
+    print(f"Первые 5000 записей успешно сохранены в {DATASET_PATH}")

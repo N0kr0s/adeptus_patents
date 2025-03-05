@@ -9,12 +9,15 @@ dotenv.load_dotenv('.env') # Загружает переменные окруж�
 from data_processing import process_excel_and_save
 
 # 1
+'''
 gp_file_path = os.getenv('SOURCE_CSV_PATH')
 csv_file_path = os.getenv('DATASET_PATH')
+'''
 new_csv_file_path = os.getenv('OUT_CSV_PATH')
 
-process_excel_and_save(gp_file_path, csv_file_path)
+process_excel_and_save()
 
+'''
 # 2
 csv = CSVPatents(csv_file_path)
 
@@ -24,3 +27,4 @@ df: DataFrame = csv.parsed_patents_csv()
 # 4 Делай что хочешь (сохраняй, удаляй, еби)
 df.to_csv(new_csv_file_path)
 
+'''
