@@ -1,9 +1,12 @@
 from typing import Generator
+import pandas as pd
 
 from pandas.core.interchange.dataframe_protocol import DataFrame
 
 from parcer import parce
 from src.patent import PatentDocument
+
+from config import DATASET_PATH
 
 
 class CSVPatents:
@@ -13,9 +16,14 @@ class CSVPatents:
         # load csv by path
 
     def rows(self):
+
         """Читает старый CSV построчно (или старый датафрейм построчно) и возвращает по одной строке"""
         # yield row # (строка из старого датафрейма)
-        ...
+        df = pd.read_csv(DATASET_PATH)
+        for index, row in df.iterrows():
+
+            yield row
+
     def all(self, limit: int = 100) -> Generator[PatentDocument]:
 
         for number, url in enumerate(self.urls()):
