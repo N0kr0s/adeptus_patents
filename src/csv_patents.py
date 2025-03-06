@@ -21,6 +21,7 @@ class CSVPatents:
         # yield row # (строка из старого датафрейма)
         df = pd.read_csv(DATASET_PATH)
         for index, row in df.iterrows():
+
             yield row
 
     def all(self, limit: int = 100) -> Generator[PatentDocument]:
