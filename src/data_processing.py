@@ -10,10 +10,10 @@ def process_excel_and_save():
     :param file_path_csv: Путь к файлу основного датасета для сохранения результатов.
     """
     try:
-        # Чтение Excel-файла, пропуская первую строку
+        # Чтение файла google patents, пропуская первую строку
         df = pd.read_csv(SOURCE_CSV_PATH, skiprows=1)
     except Exception as e:
-        print(f"Ошибка при чтении google_patents-файла {SOURCE_CSV_PATH}: {e}")
+        print(f"Ошибка при чтении google_patents файла {SOURCE_CSV_PATH}: {e}")
         return
 
     # Переименование столбцов (если они не читаются корректно)
@@ -43,4 +43,4 @@ def process_excel_and_save():
     os.makedirs(os.path.dirname(DATASET_PATH), exist_ok=True)  # Создаем директорию, если она не существует
     df_final.to_csv(DATASET_PATH, index=False)
 
-    print(f"Первые 5000 записей успешно сохранены в {DATASET_PATH}")
+    print(f"Первые {MAX_ROWS_VALUE} записей успешно сохранены в {DATASET_PATH}")
