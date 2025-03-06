@@ -13,6 +13,12 @@ from data_processing import process_excel_and_save
 gp_file_path = os.getenv('SOURCE_CSV_PATH')
 csv_file_path = os.getenv('DATASET_PATH')
 '''
+url = "https://patents.google.com/xhr/query?url=language%3DSPANISH&exp=&download=true"
+save_directory = "data/"
+file_name = "gp.csv"
+
+# Вызов функции
+download_dataset(url, save_directory, file_name)
 new_csv_file_path = os.getenv('OUT_CSV_PATH')
 
 process_excel_and_save()
