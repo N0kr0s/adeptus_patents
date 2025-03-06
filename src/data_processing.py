@@ -10,8 +10,9 @@ def process_excel_and_save():
     :param file_path_csv: Путь к файлу основного датасета для сохранения результатов.
     """
     try:
-        # Чтение Excel-файла, пропуская первую строку
-        df = pd.read_csv(SOURCE_CSV_PATH, skiprows=1)
+        # Чтение файла google patents, пропуская первую строку
+        df = pd.read_csv(SOURCE_CSV_PATH)
+
     except Exception as e:
         print(f"Ошибка при чтении google_patents-файла {SOURCE_CSV_PATH}: {e}")
         return
