@@ -1,24 +1,24 @@
 import os
-import dotenv
-from pandas import DataFrame
+from pathlib import Path
 
-from src.csv_patents import CSVPatents
+import dotenv
+
+from data_downloading import download_dataset
 
 dotenv.load_dotenv('.env') # Загружает переменные окружения
 
 from data_processing import process_excel_and_save
 
 # 1
-'''
 gp_file_path = os.getenv('SOURCE_CSV_PATH')
 csv_file_path = os.getenv('DATASET_PATH')
-'''
+
 url = "https://patents.google.com/xhr/query?url=language%3DSPANISH&exp=&download=true"
-save_directory = "data/"
+save_directory = Path(__file__).parent / "data"
 file_name = "gp.csv"
 
 # Вызов функции
-download_dataset(url, save_directory, file_name)
+download_dataset(url, str(save_directory), file_name)
 new_csv_file_path = os.getenv('OUT_CSV_PATH')
 
 process_excel_and_save()

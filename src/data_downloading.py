@@ -2,8 +2,6 @@ import os
 import requests
 import time
 
-from config import SOURCE_CSV_PATH
-
 
 def download_dataset(url, save_dir, file_name, retries=5, delay=5):
     # Проверка наличия директории

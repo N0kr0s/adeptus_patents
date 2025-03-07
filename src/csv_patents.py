@@ -21,7 +21,6 @@ class CSVPatents:
         # yield row # (строка из старого датафрейма)
         df = pd.read_csv(DATASET_PATH)
         for index, row in df.iterrows():
-
             yield row
 
     def all(self, limit: int = 100) -> Generator[PatentDocument]:
@@ -35,7 +34,7 @@ class CSVPatents:
 
     def parsed_patents_csv(self) -> DataFrame:
         # 1. создать новый DataFrame
-        # df_out = DataFrame
+        df_out = pd.DataFrame
 
         # 2. Перебираешь все строки csv файла, который подали в этот класс
         for old_row in self.rows():
@@ -45,7 +44,7 @@ class CSVPatents:
         # 2.1. Добавить в DataFrame новую строку из старого CSV
 
         # 2.2. Запустить парсер для этого патента
-        # patent: PatentDocument = parce(url)
+        patent: PatentDocument = parce(new_row['url'])
 
         # 2.3. Заполнить строку новыми данными из объекта парсера
         # new_row.add('abstract', patent.abstract)
