@@ -2,7 +2,9 @@ import os
 from pathlib import Path
 
 import dotenv
+from pandas import DataFrame
 
+from csv_patents import CSVPatents
 from data_downloading import download_dataset
 
 dotenv.load_dotenv('.env') # Загружает переменные окружения
@@ -23,14 +25,33 @@ new_csv_file_path = os.getenv('OUT_CSV_PATH')
 
 process_excel_and_save()
 
+csv = CSVPatents(csv_file_path)
+
+df: DataFrame = csv.parsed_patents_csv()
+
+df.to_csv(new_csv_file_path)
+
 '''
 # 2
 csv = CSVPatents(csv_file_path)
 
+
 # 3
 df: DataFrame = csv.parsed_patents_csv()
 
-# 4 Делай что хочешь (сохраняй, удаляй, еби)
+# 4 Делай что хочешь (сохраняй, удаляй...)
 df.to_csv(new_csv_file_path)
 
 '''
+
+print("="*50)
+columns = [
+            "id", "title", "assignee", "inventor/author", "priority date",
+            "filing/creation date", "publication date", "grant date", "url", "abstract",
+            "images", "classifications", "description", "claims", "status", "inventor",
+            "patent_citations_value", "cited_value", "priority_applications_value",
+            "apps_claiming_priority_value"
+        ]
+for i in columns:
+    print(df[i])
+    print("="*50)

@@ -4,7 +4,7 @@ from config import *
 
 def process_excel_and_save():
     """
-    Обрабатывает данные из датасета и сохраняет первые 5000 записей в файл основного датасета.
+    Обрабатывает данные из датасета и сохраняет первые MAX_ROWS_VALUE записей в файл основного датасета.
 
     :param file_path_gp: Путь к google_patents-датасету.
     :param file_path_csv: Путь к файлу основного датасета для сохранения результатов.
@@ -26,7 +26,7 @@ def process_excel_and_save():
     # Очистка DataFrame от строк с пустыми значениями в столбце 'result link'
     df = df[df['result link'].notna()]
 
-    # Выбор первых 5000 записей
+    # Выбор первых MAX_ROWS_VALUE записей
     df_limited = df.head(MAX_ROWS_VALUE)
 
     # Создание подмножества необходимых столбцов и создание копии
@@ -43,4 +43,4 @@ def process_excel_and_save():
     os.makedirs(os.path.dirname(DATASET_PATH), exist_ok=True)  # Создаем директорию, если она не существует
     df_final.to_csv(DATASET_PATH, index=False)
 
-    print(f"Первые 5000 записей успешно сохранены в {DATASET_PATH}")
+    print(f"Первые {MAX_ROWS_VALUE} записей успешно сохранены в {DATASET_PATH}")
