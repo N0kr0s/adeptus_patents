@@ -33,8 +33,7 @@ class CSVPatents:
             "id", "title", "assignee", "inventor/author", "priority date",
             "filing/creation date", "publication date", "grant date", "url", "abstract",
             "images", "classifications", "description", "claims", "status", "inventor",
-            "patent_citations_value", "cited_value", "priority_applications_value",
-            "apps_claiming_priority_value"
+            "patent_citation_number", "cited_number", "priority_applications_number",
         ]
         rows_list = []
 

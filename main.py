@@ -43,15 +43,3 @@ df: DataFrame = csv.parsed_patents_csv()
 df.to_csv(new_csv_file_path)
 
 '''
-
-print("="*50)
-columns = [
-            "id", "title", "assignee", "inventor/author", "priority date",
-            "filing/creation date", "publication date", "grant date", "url", "abstract",
-            "images", "classifications", "description", "claims", "status", "inventor",
-            "patent_citations_value", "cited_value", "priority_applications_value",
-            "apps_claiming_priority_value"
-        ]
-for i in columns:
-    print(df[i])
-    print("="*50)

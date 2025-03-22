@@ -37,4 +37,3 @@ class PatentDocument:
     patent_citation_number: int
     cited_number: int
     priority_applications_number: int
-    apps_claiming_priority_number: int

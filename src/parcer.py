@@ -33,19 +33,19 @@ def parse(url: str) -> PatentDocument:
     family_cites_element = soup.find('h2', string=lambda x: x and 'Family Cites Families' in x)
     if family_cites_element:
         family_cites_text = family_cites_element.get_text(strip=True)
-        patent_citation_number = family_cites_text.split('(')[-1].strip(')')  # Получаем число из текста
+        patent_citation_number = int(family_cites_text.split('(')[-1].strip(')'))  # Получаем число из текста
 
     cited_number = None  # Инициализируем переменную
     cited_number_element = soup.find('h2', string=lambda x: x and 'Families Citing this family' in x)
     if cited_number_element:
         cited_number_object = cited_number_element.get_text(strip=True)
-        cited_number = cited_number_object.split('(')[-1].strip(')')  # Получаем число из текста
+        cited_number = int(cited_number_object.split('(')[-1].strip(')'))  # Получаем число из текста
 
     priority_applications_number = None  # Инициализируем переменную
     priority_applications = soup.find('h2', string=lambda x: x and 'Applications Claiming Priority' in x)
     if priority_applications:
         priority_applications_text = priority_applications.get_text(strip=True)
-        priority_applications_number = priority_applications_text.split('(')[-1].strip(')')
+        priority_applications_number = int(priority_applications_text.split('(')[-1].strip(')'))
 
     apps_claiming_priority_number = int(soup.select_one('.apps-claiming-priority').text.strip()) if soup.select_one(
         '.apps-claiming-priority') else None
@@ -61,7 +61,6 @@ def parse(url: str) -> PatentDocument:
         patent_citation_number=patent_citation_number,
         cited_number=cited_number,
         priority_applications_number=priority_applications_number,
-        apps_claiming_priority_number=apps_claiming_priority_number
     )
 
     return patent
