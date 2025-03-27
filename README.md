@@ -22,3 +22,7 @@
     https://skillbox.ru/media/code/slovari-v-python-chto-nuzhno-znat-i-kak-polzovatsya/
 
 Юзаем сайт https://patents.google.com/?language=SPANISH и вытаскиваем из него url-ки (result link), переходим по ним через request, парсим всю инфу с этих url-ок к нам в датасет и всё гг вп
+
+## Установка зависимостей
+```bash
+pip install -r requirements.txt
