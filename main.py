@@ -9,7 +9,7 @@ from data_downloading import download_dataset
 
 dotenv.load_dotenv('.env') # Загружает переменные окружения
 
-from data_processing import process_excel_and_save
+from data_processing import process_and_save
 
 # 1
 gp_file_path = os.getenv('SOURCE_CSV_PATH')
@@ -23,7 +23,7 @@ file_name = "gp.csv"
 download_dataset(url, str(save_directory), file_name)
 new_csv_file_path = os.getenv('OUT_CSV_PATH')
 
-process_excel_and_save()
+process_and_save()
 
 csv = CSVPatents(csv_file_path)
 

@@ -34,6 +34,9 @@ def download_dataset(url, save_dir, file_name, retries=5, delay=5):
             if response.status_code in [503, 429]:
                 print(f"Попробуйте снова через {delay} секунд...")
                 time.sleep(delay)  # Ждем перед повторной попыткой
+
+                #503 Service Unavailable — сервер временно недоступен
+                #429 Too Many Requests — превышен лимит запросов
             else:
                 print("Не удается скачать файл из-за ошибки HTTP.")
                 return
@@ -43,11 +46,11 @@ def download_dataset(url, save_dir, file_name, retries=5, delay=5):
 
     print("Все попытки исчерпаны. Не удалось скачать файл.")
 
+if __name__ == '__main__':
+    # Параметры
+    url = "https://patents.google.com/xhr/query?url=language%3DSPANISH&exp=&download=true"
+    save_directory = "data/"
+    file_name = "gp.csv"
 
-# Параметры
-url = "https://patents.google.com/xhr/query?url=language%3DSPANISH&exp=&download=true"
-save_directory = "data/"
-file_name = "gp.csv"
-
-# Вызов функции
-download_dataset(url, save_directory, file_name)
+    # Вызов функции
+    download_dataset(url, save_directory, file_name)

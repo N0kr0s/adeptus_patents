@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from config import *
 
-def process_excel_and_save():
+def process_and_save():
     """
     Обрабатывает данные из датасета и сохраняет первые MAX_ROWS_VALUE записей в файл основного датасета.
 
