@@ -2,13 +2,9 @@ from typing import Generator
 import pandas as pd
 import dataclasses
 
-from pandas.core.interchange.dataframe_protocol import DataFrame
-
-from parcer import parse
+from src.parser import parse
 from src.patent import PatentDocument
-
-from config import DATASET_PATH, OUT_CSV_PATH
-
+from src.config import DATASET_PATH, OUT_CSV_PATH
 
 class CSVPatents:
     def __init__(self, path: str):
@@ -27,8 +23,8 @@ class CSVPatents:
         for _, row in df.iterrows():
             yield row.to_dict()
 
-    def parsed_patents_csv(self) -> DataFrame:
-        # 1. Создать новый DataFrame
+    def parsed_patents_csv(self) -> pd.DataFrame:
+        # 1. Создание нового DataFrame
         columns = [
             "id", "title", "assignee", "inventor/author", "priority date",
             "filing/creation date", "publication date", "grant date", "url", "abstract",
@@ -37,23 +33,23 @@ class CSVPatents:
         ]
         rows_list = []
 
-        # 2. Перебираем все строки CSV-файла
+        # 2. Перебор всех строки CSV-файла
         for old_row in self.rows():
             try:
-                # 2.1. Запускаем парсер для этого патента
+                # 2.1. Запуск парсер для этого патента
                 patent: PatentDocument = parse(old_row['url'])
 
-                # 2.2. Заполняем строку новыми данными
+                # 2.2. Заполнение строк новыми данными
                 new_row = self.rows_filling(patent, old_row)
                 rows_list.append(new_row)
 
             except Exception as e:
                 print(f"Ошибка при обработке строки {old_row.get('url')}: {e}")
 
-        # 3. Создаем DataFrame из списка строк
+        # 3. Сохдание DataFrame из списка строк
         df_out = pd.DataFrame(rows_list, columns=columns)
 
-        # 4. Сохраняем DataFrame в файл
+        # 4. Сохранение DataFrame в файл
         df_out.to_csv(OUT_CSV_PATH, index=False)
         return df_out
 

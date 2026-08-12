@@ -4,15 +4,12 @@ from pathlib import Path
 import dotenv
 from pandas import DataFrame
 
-from csv_patents import CSVPatents
-from data_downloading import download_dataset
+from src.csv_patents import CSVPatents
+from src.data_downloading import download_dataset
+from src.data_processing import process_and_save
 
-dotenv.load_dotenv('.env') # Загружает переменные окружения
+dotenv.load_dotenv('.env')
 
-from data_processing import process_and_save
-
-# 1
-gp_file_path = os.getenv('SOURCE_CSV_PATH')
 csv_file_path = os.getenv('DATASET_PATH')
 
 url = "https://patents.google.com/xhr/query?url=language%3DSPANISH&exp=&download=true"
@@ -30,16 +27,3 @@ csv = CSVPatents(csv_file_path)
 df: DataFrame = csv.parsed_patents_csv()
 
 df.to_csv(new_csv_file_path)
-
-'''
-# 2
-csv = CSVPatents(csv_file_path)
-
-
-# 3
-df: DataFrame = csv.parsed_patents_csv()
-
-# 4 Делай что хочешь (сохраняй, удаляй...)
-df.to_csv(new_csv_file_path)
-
-'''

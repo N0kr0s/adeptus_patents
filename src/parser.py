@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from patent import PatentDocument
-
+from src.patent import PatentDocument
 
 def parse(url: str) -> PatentDocument:
     response = requests.get(url)
