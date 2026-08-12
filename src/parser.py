@@ -1,53 +1,164 @@
 import requests
 from bs4 import BeautifulSoup
+
 from src.patent import PatentDocument
 
-def parse(url: str) -> PatentDocument:
-    response = requests.get(url)
+
+def parse(url: str) -> PatentDocument | None:
+    response = requests.get(
+        url,
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (X11; Linux x86_64) "
+                "AppleWebKit/537.36 "
+                "(KHTML, like Gecko) "
+                "Chrome/131.0.0.0 Safari/537.36"
+            ),
+            "Accept": (
+                "text/html,application/xhtml+xml,"
+                "application/xml;q=0.9,*/*;q=0.8"
+            ),
+            "Accept-Language": "es,en;q=0.8",
+        },
+        timeout=30,
+    )
+
+    print(f"URL: {url}")
+    print(f"HTTP status: {response.status_code}")
+    print(f"Content-Type: {response.headers.get('Content-Type')}")
+    print(f"Response size: {len(response.content)} bytes")
+
     if response.status_code != 200:
-        print(f"Ошибка при запросе URL: {url}")
+        print("Ответ сервера:")
+        print(response.text[:1000])
         return None
 
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = BeautifulSoup(response.content, "html.parser")
 
-    # Извлечение данных
-    abstract_element = soup.find('div', class_='abstract')
-    abstract = abstract_element.text.strip() if abstract_element else None
+    # Аннотация
+    abstract_element = soup.find("div", class_="abstract")
+    abstract = (
+        abstract_element.get_text(strip=True)
+        if abstract_element
+        else None
+    )
 
-    images = [img['src'] for img in soup.select('img[src*="patent"]')] or None
+    # Изображения
+    images = [
+        img["src"]
+        for img in soup.select('img[src*="patent"]')
+        if img.get("src")
+    ] or None
 
-    classifications_elements = soup.find_all('li', itemprop='classifications')
-    classifications = [inv.text.strip() for inv in classifications_elements] if classifications_elements else None
+    # Классификации
+    classifications_elements = soup.find_all(
+        "li",
+        itemprop="classifications",
+    )
 
-    description_element = soup.select_one('.description')
-    description = description_element.text.strip() if description_element else None
+    classifications = (
+        [
+            element.get_text(strip=True)
+            for element in classifications_elements
+        ]
+        if classifications_elements
+        else None
+    )
 
-    claims_elements = soup.select('.claims .claim')
-    claims = "\n".join(claim.text.strip() for claim in claims_elements) if claims_elements else None
+    # Описание
+    description_element = soup.select_one(".description")
 
-    inventor_elements = soup.select('dd[itemprop="inventor"]')
-    inventors = [inv.text.strip() for inv in inventor_elements] if inventor_elements else None
+    description = (
+        description_element.get_text(strip=True)
+        if description_element
+        else None
+    )
 
-    patent_citation_number = None  # Инициализируем переменную
-    family_cites_element = soup.find('h2', string=lambda x: x and 'Family Cites Families' in x)
+    # Claims
+    claims_elements = soup.select(".claims .claim")
+
+    claims = (
+        "\n".join(
+            claim.get_text(strip=True)
+            for claim in claims_elements
+        )
+        if claims_elements
+        else None
+    )
+
+    # Изобретатели
+    inventor_elements = soup.select(
+        'dd[itemprop="inventor"]'
+    )
+
+    inventors = (
+        [
+            inventor.get_text(strip=True)
+            for inventor in inventor_elements
+        ]
+        if inventor_elements
+        else None
+    )
+
+    # Patent citations
+    patent_citation_number = None
+
+    family_cites_element = soup.find(
+        "h2",
+        string=lambda x: (
+            x and "Family Cites Families" in x
+        ),
+    )
+
     if family_cites_element:
-        family_cites_text = family_cites_element.get_text(strip=True)
-        patent_citation_number = int(family_cites_text.split('(')[-1].strip(')'))  # Получаем число из текста
+        text = family_cites_element.get_text(strip=True)
 
-    cited_number = None  # Инициализируем переменную
-    cited_number_element = soup.find('h2', string=lambda x: x and 'Families Citing this family' in x)
+        try:
+            patent_citation_number = int(
+                text.split("(")[-1].strip(")")
+            )
+        except ValueError:
+            pass
+
+    # Cited number
+    cited_number = None
+
+    cited_number_element = soup.find(
+        "h2",
+        string=lambda x: (
+            x and "Families Citing this family" in x
+        ),
+    )
+
     if cited_number_element:
-        cited_number_object = cited_number_element.get_text(strip=True)
-        cited_number = int(cited_number_object.split('(')[-1].strip(')'))  # Получаем число из текста
+        text = cited_number_element.get_text(strip=True)
 
-    priority_applications_number = None  # Инициализируем переменную
-    priority_applications = soup.find('h2', string=lambda x: x and 'Applications Claiming Priority' in x)
+        try:
+            cited_number = int(
+                text.split("(")[-1].strip(")")
+            )
+        except ValueError:
+            pass
+
+    # Priority applications
+    priority_applications_number = None
+
+    priority_applications = soup.find(
+        "h2",
+        string=lambda x: (
+            x and "Applications Claiming Priority" in x
+        ),
+    )
+
     if priority_applications:
-        priority_applications_text = priority_applications.get_text(strip=True)
-        priority_applications_number = int(priority_applications_text.split('(')[-1].strip(')'))
+        text = priority_applications.get_text(strip=True)
 
-    apps_claiming_priority_number = int(soup.select_one('.apps-claiming-priority').text.strip()) if soup.select_one(
-        '.apps-claiming-priority') else None
+        try:
+            priority_applications_number = int(
+                text.split("(")[-1].strip(")")
+            )
+        except ValueError:
+            pass
 
     patent = PatentDocument(
         abstract=abstract,
@@ -65,20 +176,33 @@ def parse(url: str) -> PatentDocument:
     return patent
 
 
-if __name__ == '__main__':
-    url = 'https://patents.google.com/patent/ES2557055T3/es#relatedApplications'
+if __name__ == "__main__":
+    url = (
+        "https://patents.google.com/"
+        "patent/ES2557055T3/es"
+    )
+
     patent = parse(url)
+
     if patent:
-        print("Информация о патенте:")
+        print("\nИнформация о патенте:")
         print(f"Аннотация: {patent.abstract}")
         print(f"Изображения: {patent.images}")
         print(f"Классификации: {patent.classifications}")
         print(f"Описание: {patent.description}")
         print(f"Претензии: {patent.claims}")
         print(f"Изобретатели: {patent.inventor}")
-        print(f"Количество патентных цитат: {patent.patent_citation_number}")
-        print(f"Количество цитирований: {patent.cited_number}")
-        print(f"Количество приоритетных заявок: {patent.priority_applications_number}")
-        print(f"Количество заявок, claiming priority: {patent.apps_claiming_priority_number}")
+        print(
+            "Количество патентных цитат: "
+            f"{patent.patent_citation_number}"
+        )
+        print(
+            "Количество цитирований: "
+            f"{patent.cited_number}"
+        )
+        print(
+            "Количество приоритетных заявок: "
+            f"{patent.priority_applications_number}"
+        )
     else:
         print("Не удалось получить данные о патенте.")
