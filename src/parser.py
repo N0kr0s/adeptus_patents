@@ -1,27 +1,73 @@
+import time
 import requests
+
 from bs4 import BeautifulSoup
 
 from src.patent import PatentDocument
+from src.config import REQUEST_TIMEOUT, MAX_RETRIES
 
 
 def parse(url: str) -> PatentDocument | None:
-    response = requests.get(
-        url,
-        headers={
-            "User-Agent": (
-                "Mozilla/5.0 (X11; Linux x86_64) "
-                "AppleWebKit/537.36 "
-                "(KHTML, like Gecko) "
-                "Chrome/131.0.0.0 Safari/537.36"
-            ),
-            "Accept": (
-                "text/html,application/xhtml+xml,"
-                "application/xml;q=0.9,*/*;q=0.8"
-            ),
-            "Accept-Language": "es,en;q=0.8",
-        },
-        timeout=30,
-    )
+    for attempt in range(1, MAX_RETRIES + 1):
+
+        try:
+
+            response = requests.get(
+                url,
+                headers={
+                    "User-Agent": (
+                        "Mozilla/5.0 (X11; Linux x86_64) "
+                        "AppleWebKit/537.36 "
+                        "(KHTML, like Gecko) "
+                        "Chrome/131.0.0.0 Safari/537.36"
+                    ),
+                    "Accept": (
+                        "text/html,application/xhtml+xml,"
+                        "application/xml;q=0.9,*/*;q=0.8"
+                    ),
+                    "Accept-Language": "es,en;q=0.8",
+                },
+                timeout=REQUEST_TIMEOUT,
+            )
+
+            print(
+                f"\nURL: {url}"
+            )
+
+            print(
+                f"HTTP status: {response.status_code}"
+            )
+
+            print(
+                f"Response size: "
+                f"{len(response.content)} bytes"
+            )
+
+            if response.status_code == 200:
+                break
+
+            print(
+                f"Попытка {attempt}/{MAX_RETRIES} "
+                f"завершилась статусом "
+                f"{response.status_code}"
+            )
+
+        except requests.RequestException as e:
+
+            print(
+                f"\nОшибка запроса "
+                f"(попытка {attempt}/{MAX_RETRIES}): "
+                f"{e}"
+            )
+
+            if attempt == MAX_RETRIES:
+                return None
+
+            # Небольшая пауза перед повтором
+            time.sleep(attempt * 2)
+
+    else:
+        return None
 
     print(f"URL: {url}")
     print(f"HTTP status: {response.status_code}")

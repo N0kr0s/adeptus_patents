@@ -15,7 +15,7 @@ def download_dataset(url, save_dir, file_name, retries=5, delay=5):
     # Проверка, существует ли файл
     if os.path.exists(file_path):
         print(f"Файл {file_name} уже существует в {save_dir}.")
-        return
+        return True
 
     # Скачивание файла
     for attempt in range(retries):
@@ -27,7 +27,7 @@ def download_dataset(url, save_dir, file_name, retries=5, delay=5):
             with open(file_path, 'wb') as f:
                 f.write(response.content)
             print(f"Файл успешно скачан и сохранён как {file_name} в {save_dir}.")
-            return
+            return True
 
         except requests.exceptions.HTTPError as http_err:
             print(f"HTTP ошибка: {http_err}")
@@ -45,6 +45,7 @@ def download_dataset(url, save_dir, file_name, retries=5, delay=5):
             return
 
     print("Все попытки исчерпаны. Не удалось скачать файл.")
+    return False
 
 if __name__ == '__main__':
     # Параметры
