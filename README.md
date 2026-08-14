@@ -202,3 +202,7 @@ adeptus_patents/
 This project was developed as part of an **introductory practice at RTU MIREA**.
 
 **RTU MIREA introductory practice project**
+
+## License
+
+This project is licensed under the MIT License.
