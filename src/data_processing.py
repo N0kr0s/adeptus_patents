@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from config import *
+from src.config import *
 
 def process_and_save():
     """
@@ -10,7 +10,7 @@ def process_and_save():
     :param file_path_csv: Путь к файлу основного датасета для сохранения результатов.
     """
     try:
-        # Чтение Excel-файла, пропуская первую строку
+        # Чтение csv-файла, пропуская первую строку
         df = pd.read_csv(SOURCE_CSV_PATH, skiprows=1)
     except Exception as e:
         print(f"Ошибка при чтении google_patents-файла {SOURCE_CSV_PATH}: {e}")

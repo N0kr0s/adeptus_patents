@@ -1,6 +1,18 @@
-
-./data
-data/
-data/**
-
+# Environment
 .env
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Data
+data/
+*.csv
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+test_parser.py

@@ -27,13 +27,13 @@ class PatentDocument:
     :apps_claiming_priority_number: Аналогично, число ("Apps Claiming Priority").
 
     """
-    abstract: str
-    images: list[str]
-    classifications: list[str]
-    description: str
-    claims: str
-    status: str
-    inventor: list[str]
-    patent_citation_number: int
-    cited_number: int
-    priority_applications_number: int
+    abstract: str | None
+    images: list[str] | None
+    classifications: list[str] | None
+    description: str | None
+    claims: str | None
+    status: str | None
+    inventor: list[str] | None
+    patent_citation_number: int | None
+    cited_number: int | None
+    priority_applications_number: int | None
